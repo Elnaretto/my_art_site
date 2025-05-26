@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Medieval Art of Europe</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    .card {
+      border: 1px solid #ccc;
+      padding: 16px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    }
+    .card img {
+      max-width: 100%;
+      height: auto;
+    }
+    .card h2 {
+      margin-top: 0.5em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Medieval Art from MET</h1>
+  <div id="gallery">Loading...</div>
+
+  <script>
+  const sheetBestURL = "https://api.sheetbest.com/sheets/bd615e4b-7e12-4770-8eff-d3e543b34257";
+  fetch(sheetBestURL)
+    .then(response => response.json())
+    .then(data => {
+      const gallery = document.getElementById('gallery');
+      gallery.innerHTML = ''; // Clear "Loading..."
+
+      data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${item.Image}" alt="${item.Title}">
+          <h2>${item.Title}</h2>
+          <p>${item.Description}</p>
+          <p><a href="${item.Link}" target="_blank">View on MET</a></p>
+        `;
+        gallery.appendChild(card);
+      });
+    })
+    .catch(error => {
+      document.getElementById('gallery').innerHTML = '⚠️ Failed to load data.';
+      console.error("Fetch error:", error);
+    });
+</script>
+</body>
+</html>
